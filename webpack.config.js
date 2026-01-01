@@ -5,9 +5,10 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CustomFunctionsMetadataPlugin = require("custom-functions-metadata-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = "https://volkan-a.github.io/coolprop-excel/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 /* global require, module, process, __dirname */
 
@@ -104,6 +105,9 @@ module.exports = async (env, options) => {
         filename: "index.html",
         template: "./src/index.html",
         chunks: [],
+      }),
+      new webpack.DefinePlugin({
+        "process.env.BASE_URL": JSON.stringify(dev ? urlDev : urlProd),
       }),
     ],
     devServer: {

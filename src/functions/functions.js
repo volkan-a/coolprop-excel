@@ -23,7 +23,7 @@ async function initCoolProp() {
     try {
       console.log("Starting dynamic import of coolprop.js...");
 
-      const modulePath = "https://localhost:3000/wasm/coolprop.js";
+      const modulePath = process.env.BASE_URL + "wasm/coolprop.js";
       const coolpropLib = await import(/* webpackIgnore: true */ modulePath);
 
       console.log("coolprop.js imported successfully");
@@ -37,7 +37,7 @@ async function initCoolProp() {
       const module = await createCoolPropModule({
         locateFile: (path) => {
           if (path.endsWith(".wasm")) {
-            const wasmPath = "https://localhost:3000/wasm/coolprop.wasm";
+            const wasmPath = process.env.BASE_URL + "wasm/coolprop.wasm";
             return wasmPath;
           }
           return path;
