@@ -1,0 +1,117 @@
+/* global CustomFunctions, console */
+
+let CoolPropModule = null;
+let isLoading = false;
+let loadPromise = null;
+
+// WASM Yükleme
+async function initCoolProp() {
+  if (CoolPropModule) return CoolPropModule;
+  if (isLoading) return loadPromise;
+
+  isLoading = true;
+  loadPromise = new Promise(async (resolve, reject) => {
+    try {
+      // CoolProp script'i yükle
+      const script = document.createElement("script");
+      // Hardcoded for stability
+      const baseUrl = "https://localhost:3000"; 
+      script.src = `${baseUrl}/wasm/coolprop.js`;
+      script.onload = async () => {
+        try {
+          // createCoolPropModule fonksiyonunu bekle
+          if (typeof createCoolPropModule === "undefined") {
+            reject(new Error("createCoolPropModule not found"));
+            return;
+          }
+
+          const module = await createCoolPropModule({
+            locateFile: (path) => {
+              if (path.endsWith(".wasm")) {
+                return `${baseUrl}/wasm/coolprop.wasm`;
+              }
+              return path;
+            },
+          });
+
+          CoolPropModule = module;
+          isLoading = false;
+          resolve(module);
+        } catch (err) {
+          isLoading = false;
+          reject(err);
+        }
+      };
+      script.onerror = (err) => {
+        isLoading = false;
+        reject(new Error("Failed to load coolprop.js: " + err));
+      };
+      document.head.appendChild(script);
+    } catch (error) {
+      isLoading = false;
+      reject(error);
+    }
+  });
+
+  return loadPromise;
+}
+
+/**
+ * Test function
+ * @customfunction
+ * @returns {string}
+ */
+async function HELLO() {
+  return "CoolProp Ready!";
+}
+
+/**
+ * CoolProp PropsSI function
+ * @customfunction
+ * @param {string} output Output property (D, H, S, T, P, etc.)
+ * @param {string} name1 First input name
+ * @param {number} prop1 First input value
+ * @param {string} name2 Second input name
+ * @param {number} prop2 Second input value
+ * @param {string} ref Fluid name (Water, Air, R134a, etc.)
+ * @returns {number}
+ */
+async function PROPSI(output, name1, prop1, name2, prop2, ref) {
+  try {
+    if (!CoolPropModule) {
+      await initCoolProp();
+    }
+
+    return CoolPropModule.PropsSI(output, name1, prop1, name2, prop2, ref);
+  } catch (error) {
+    return "#ERROR: " + (error.message || error.toString());
+  }
+}
+
+/**
+ * Get CoolProp version
+ * @customfunction
+ * @returns {string}
+ */
+async function VERSION() {
+  try {
+    if (!CoolPropModule) {
+      await initCoolProp();
+    }
+    return CoolPropModule.get_global_param_string("version");
+  } catch (error) {
+    return "Not loaded";
+  }
+}
+
+// Register functions
+CustomFunctions.associate("HELLO", HELLO);
+CustomFunctions.associate("PROPSI", PROPSI);
+CustomFunctions.associate("VERSION", VERSION);
+
+// Auto-initialize on load
+Office.onReady(() => {
+  initCoolProp().catch((err) => {
+    console.error("CoolProp init failed:", err);
+  });
+});

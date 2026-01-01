@@ -1,0 +1,98 @@
+{
+    "allowCustomDataForDataTypeAny": true,
+    "functions": [
+        {
+            "description": "Test function to verify add-in is working",
+            "id": "TEST_HELLO",
+            "name": "TEST_HELLO",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "Get CoolProp version",
+            "id": "VERSION",
+            "name": "VERSION",
+            "parameters": [],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "CoolProp PropsSI function (High-Level API)",
+            "id": "PROPSI",
+            "name": "PROPSI",
+            "parameters": [
+                {
+                    "description": "Output property (D, H, S, T, P, etc.)",
+                    "name": "output",
+                    "type": "string"
+                },
+                {
+                    "description": "First input name",
+                    "name": "name1",
+                    "type": "string"
+                },
+                {
+                    "description": "First input value",
+                    "name": "prop1",
+                    "type": "number"
+                },
+                {
+                    "description": "Second input name",
+                    "name": "name2",
+                    "type": "string"
+                },
+                {
+                    "description": "Second input value",
+                    "name": "prop2",
+                    "type": "number"
+                },
+                {
+                    "description": "Fluid name (Water, Air, R134a, etc.)",
+                    "name": "ref",
+                    "type": "string"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "AbstractState property calculation - Low-Level API with cached state",
+            "id": "STATEPROPS",
+            "name": "STATEPROPS",
+            "parameters": [
+                {
+                    "description": "Fluid name (Water, R134a, Methane&Ethane for mixtures)",
+                    "name": "fluid",
+                    "type": "string"
+                },
+                {
+                    "description": "Input pair (PT_INPUTS, PQ_INPUTS, QT_INPUTS, etc.)",
+                    "name": "inputPair",
+                    "type": "string"
+                },
+                {
+                    "description": "First input value",
+                    "name": "value1",
+                    "type": "number"
+                },
+                {
+                    "description": "Second input value",
+                    "name": "value2",
+                    "type": "number"
+                },
+                {
+                    "description": "Output property (T, p, rhomass, hmass, smass, cpmass, viscosity, conductivity, etc.)",
+                    "name": "output",
+                    "type": "string"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        }
+    ]
+}

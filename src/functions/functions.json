@@ -1,0 +1,33 @@
+{
+  "functions": [
+    {
+      "id": "PROPSI",
+      "name": "PROPSI",
+      "description": "Calculate thermodynamic properties using CoolProp PropsSI (High-Level API)",
+      "helpUrl": "http://www.coolprop.org",
+      "result": { "type": "number", "dimensionality": "scalar" },
+      "parameters": [
+        { "name": "output", "description": "Output property (D, H, S, T, P, etc.)", "type": "string", "dimensionality": "scalar" },
+        { "name": "name1", "description": "First input property name", "type": "string", "dimensionality": "scalar" },
+        { "name": "prop1", "description": "First input value", "type": "number", "dimensionality": "scalar" },
+        { "name": "name2", "description": "Second input property name", "type": "string", "dimensionality": "scalar" },
+        { "name": "prop2", "description": "Second input value", "type": "number", "dimensionality": "scalar" },
+        { "name": "ref", "description": "Fluid name (Water, R134a, etc.)", "type": "string", "dimensionality": "scalar" }
+      ]
+    },
+    {
+      "id": "STATEPROPS",
+      "name": "STATEPROPS",
+      "description": "AbstractState property calculation - Low-Level API with caching",
+      "helpUrl": "http://www.coolprop.org/coolprop/LowLevelAPI.html",
+      "result": { "type": "number", "dimensionality": "scalar" },
+      "parameters": [
+        { "name": "fluid", "description": "Fluid name (Water, R134a, Methane&Ethane)", "type": "string", "dimensionality": "scalar" },
+        { "name": "inputPair", "description": "Input pair (PT_INPUTS, PQ_INPUTS, QT_INPUTS)", "type": "string", "dimensionality": "scalar" },
+        { "name": "value1", "description": "First input value", "type": "number", "dimensionality": "scalar" },
+        { "name": "value2", "description": "Second input value", "type": "number", "dimensionality": "scalar" },
+        { "name": "output", "description": "Output property (T, rhomass, hmass, viscosity, etc.)", "type": "string", "dimensionality": "scalar" }
+      ]
+    }
+  ]
+}
